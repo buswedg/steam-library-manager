@@ -39,7 +39,7 @@ def get_games_by_base_dir():
 
             for manifest_file in manifest_files:
                 manifest_path = os.path.join(steamapps_dir, manifest_file)
-                with open(manifest_path) as manifest_file:
+                with open(manifest_path, encoding='utf-8') as manifest_file:
                     app_vdf = parse(manifest_file)
 
                 app_state = app_vdf.get('AppState', {})
@@ -50,7 +50,8 @@ def get_games_by_base_dir():
                 game_tuple = (game_id, game_name, install_dir)
                 games_by_base_dir[base_install_dir].append(game_tuple)
 
-        except ValueError:
+        except ValueError as e:
+            print(f"ERROR: {e}")
             pass
 
     for root_location, game_tuple in games_by_base_dir.items():
